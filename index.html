@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Your Tap Water</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Check The Water Quality in Your Area</h1>
+        <p>Enter your zip code to get a free water quality report from the Environmental Working Group's database.</p>
+        <form id="zip-form">
+            <input type="text" id="zip-input" placeholder="Enter your zip code" required pattern="\d{5}">
+            <button type="submit">Get My Report</button>
+        </form>
+        <div id="results">
+            <div id="report-summary"></div>
+            <div id="report-details">
+                <!-- Water quality results will be displayed here -->
+            </div>
+        </div>
+    </div>
+    <script src="script.js" defer></script>
+</body>
+</html>
