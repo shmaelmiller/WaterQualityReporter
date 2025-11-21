@@ -6,6 +6,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const reportSummaryDiv = document.getElementById('report-summary');
     const reportDetailsDiv = document.getElementById('report-details');
 
+    let contaminantCodeMapping = {};
+
+    // Fetch the contaminant code mapping
+    fetch('/contaminant_code_mapping.json')
+        .then(response => response.json())
+        .then(data => {
+            contaminantCodeMapping = data;
+            console.log('Contaminant code mapping loaded:', contaminantCodeMapping);
+        })
+        .catch(error => {
+            console.error('Error loading contaminant code mapping:', error);
+        });
+
     // Add event listener for form submission
     zipForm.addEventListener('submit', async (event) => {
         event.preventDefault(); // Prevent default form submission behavior
@@ -95,11 +108,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 const hgValue = parseFloat(contaminant.ContaminantHGValue);
 
                 if (!isNaN(systemAverage) && !isNaN(hgValue) && hgValue > 0 && systemAverage > hgValue) {
+                    contaminant.multiplier = systemAverage / hgValue; // Calculate and store multiplier
                     actualExceedingList.push(contaminant);
                 } else {
                     actualOthersList.push(contaminant);
                 }
             });
+
+            // Sort the lists
+            actualExceedingList.sort((a, b) => b.multiplier - a.multiplier);
+            actualOthersList.sort((a, b) => a.ContaminantName.localeCompare(b.ContaminantName));
 
             const processedInformation = {
                 exceedsList: actualExceedingList,
@@ -234,10 +252,16 @@ document.addEventListener('DOMContentLoaded', () => {
             cardsContainer.innerHTML = ''; // Clear previous cards
             if (list && list.length > 0) {
                 list.forEach(contaminant => {
-                    const multiplier = (contaminant.SystemAverage && contaminant.ContaminantHGValue && contaminant.ContaminantHGValue !== 0) 
-                                       ? (contaminant.SystemAverage / contaminant.ContaminantHGValue).toFixed(2) 
-                                       : null;
+                    const multiplier = contaminant.multiplier ? contaminant.multiplier.toFixed(2) : null;
                     const healthRiskColor = isExceeding ? 'red' : 'green'; // Simple color for now
+
+                    const contamCode = contaminantCodeMapping[contaminant.ContaminantName];
+                    let ewgSearchUrl;
+                    if (contamCode) {
+                        ewgSearchUrl = `https://www.ewg.org/tapwater/contaminant.php?contamcode=${contamCode}`;
+                    } else {
+                        ewgSearchUrl = `https://www.ewg.org/tapwater/chemical-contaminants.php?q=${encodeURIComponent(contaminant.ContaminantName)}`;
+                    }
 
                     const cardHtml = `
                         <div class="contaminant-card ${isExceeding ? 'exceeds' : ''}">
@@ -249,6 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <p><strong>EWG Health Guideline:</strong> <span>${contaminant.ContaminantHGValue} ${contaminant.ContaminantDisplayUnits}</span></p>
                                 <p><strong>Legal Limit:</strong> <span>${contaminant.ContaminantMCLValue} ${contaminant.ContaminantDisplayUnits}</span></p>
                             </div>
+                            <a href="${ewgSearchUrl}" target="_blank" class="more-info-btn">More Info on EWG</a>
                         </div>
                     `;
                     cardsContainer.innerHTML += cardHtml;

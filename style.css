@@ -117,12 +117,13 @@ button[type="submit"]:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #BBDEFB; /* Light blue banner */
+    background-color: #E3F2FD; /* Very light blue */
     padding: 15px 25px;
     border-radius: 8px;
     margin-bottom: 20px;
     flex-wrap: wrap;
     gap: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Subtle shadow */
 }
 
 .exceeds-badge {
@@ -218,12 +219,28 @@ button[type="submit"]:hover {
 }
 
 .toggle-btn.active {
-    background-color: #1a2533; /* Dark background for active */
+    background-color: #2196F3; /* Blue background for active */
     color: white;
 }
 
 .toggle-btn:hover:not(.active) {
-    background-color: #CCCCCC;
+    background-color: #BBDEFB; /* Lighter blue for hover */
+}
+
+.select-other-system-btn {
+    background-color: #2196F3; /* Deep blue */
+    color: white;
+    padding: 8px 15px;
+    font-size: 14px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    white-space: nowrap;
+}
+
+.select-other-system-btn:hover {
+    background-color: #1976D2;
 }
 
 .contaminant-cards-grid {
@@ -447,3 +464,34 @@ button[type="submit"]:hover {
         right: -10px;
     }
 }
+
+.more-info-btn {
+    display: inline-block;
+    background-color: #2196F3; /* Blue color */
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-top: 15px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.more-info-btn:hover {
+    background-color: #1976D2;
+}
+
+body {
+    font-family: 'Inter', 'Arial', sans-serif; /* Prioritize Inter, fallback to Arial */
+    background: #FFFFFF; /* White background */
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+

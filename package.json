@@ -4,10 +4,14 @@
   "description": "A simple web app to fetch and display water quality data.",
   "main": "script.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "netlify dev"
   },
   "dependencies": {
     "express": "^4.17.1",
     "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "netlify-cli": "^23.11.1"
   }
 }
